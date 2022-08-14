@@ -1,8 +1,8 @@
 package br.com.ibm.TudoDeBom.service;
 
 import br.com.ibm.TudoDeBom.entities.ClientEntity;
-import br.com.ibm.TudoDeBom.entities.dto.request.RequestClientDTO;
-import br.com.ibm.TudoDeBom.entities.dto.response.ResponseClientDTO;
+import br.com.ibm.TudoDeBom.dto.request.RequestClientDTO;
+import br.com.ibm.TudoDeBom.dto.response.ResponseClientDTO;
 import br.com.ibm.TudoDeBom.repository.ClientRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

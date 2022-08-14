@@ -1,9 +1,9 @@
 package br.com.ibm.TudoDeBom.repository;
 
-import br.com.ibm.TudoDeBom.entities.ProductEntity;
+import br.com.ibm.TudoDeBom.entities.SaidaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
+public interface SaidaRepository extends JpaRepository<SaidaEntity, Long> {
 }

@@ -1,4 +1,4 @@
-package br.com.ibm.TudoDeBom.entities.dto.response;
+package br.com.ibm.TudoDeBom.dto.response;
 
 import lombok.Data;
 

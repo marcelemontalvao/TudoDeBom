@@ -1,7 +1,7 @@
 package br.com.ibm.TudoDeBom.controller;
 
-import br.com.ibm.TudoDeBom.entities.dto.request.RequestClientDTO;
-import br.com.ibm.TudoDeBom.entities.dto.response.ResponseClientDTO;
+import br.com.ibm.TudoDeBom.dto.request.RequestClientDTO;
+import br.com.ibm.TudoDeBom.dto.response.ResponseClientDTO;
 import br.com.ibm.TudoDeBom.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/clients")
 public class ClientController {
-
     @Autowired
     private ClientService clientService;
 

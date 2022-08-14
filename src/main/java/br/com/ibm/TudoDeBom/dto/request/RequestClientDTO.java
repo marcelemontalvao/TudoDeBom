@@ -1,4 +1,4 @@
-package br.com.ibm.TudoDeBom.entities.dto.request;
+package br.com.ibm.TudoDeBom.dto.request;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.br.CPF;
