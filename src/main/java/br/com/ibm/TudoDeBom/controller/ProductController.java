@@ -1,7 +1,10 @@
 package br.com.ibm.TudoDeBom.controller;
 
+import br.com.ibm.TudoDeBom.dto.request.RequestEntradaDTO;
 import br.com.ibm.TudoDeBom.dto.request.RequestProdutoDTO;
+import br.com.ibm.TudoDeBom.dto.request.RequestSaidaDTO;
 import br.com.ibm.TudoDeBom.dto.response.ResponseProductDTO;
+import br.com.ibm.TudoDeBom.dto.response.ResponseSaidaDTO;
 import br.com.ibm.TudoDeBom.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +19,11 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @PostMapping()
-    public ResponseEntity<ResponseProductDTO> post(@Valid @RequestBody RequestProdutoDTO requestProdutoDTO) {
-        ResponseProductDTO responseProductDTO = productService.save(requestProdutoDTO);
+    @PostMapping
+    public ResponseEntity<ResponseProductDTO> postOrder(@RequestBody @Valid RequestProdutoDTO requestProdutoDTO, RequestEntradaDTO requestEntradaDTO, ResponseSaidaDTO responseSaidaDTO, ResponseProductDTO responseProductDTO) {
+        productService.save(requestProdutoDTO, requestEntradaDTO,responseSaidaDTO , responseProductDTO);
         return ResponseEntity.ok(responseProductDTO);
     }
-
     @GetMapping()
     public ResponseEntity<List<ResponseProductDTO>> get(ResponseProductDTO responseClienteDTO) {
         List<ResponseProductDTO> responsesClienteDTO = productService.getAll();

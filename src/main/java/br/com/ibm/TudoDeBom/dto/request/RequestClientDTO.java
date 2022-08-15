@@ -7,18 +7,18 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class RequestClientDTO {
-    @NotBlank
-    private String nome;
-    @NotBlank
-    @CPF
-    private String cpf;
-    @NotBlank
-    @Email
-    private String email;
-    @NotBlank
-    private String senha;
-    @NotBlank
-    private String telefone;
-    @NotBlank
-    private String endereco;
+        @NotBlank
+        private String nome;
+        @NotBlank
+        @CPF
+        private String cpf;
+        @NotBlank
+        @Email
+        private String email;
+        @NotBlank
+        private String senha;
+        @NotBlank
+        private String telefone;
+        @NotBlank
+        private String endereco;
 }

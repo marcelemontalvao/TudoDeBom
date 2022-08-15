@@ -1,7 +1,9 @@
 package br.com.ibm.TudoDeBom.service;
 
 import br.com.ibm.TudoDeBom.dto.request.RequestEntradaDTO;
+import br.com.ibm.TudoDeBom.dto.request.RequestProdutoDTO;
 import br.com.ibm.TudoDeBom.dto.response.ResponseEntradaDTO;
+import br.com.ibm.TudoDeBom.dto.response.ResponseSaidaDTO;
 import br.com.ibm.TudoDeBom.entities.EntradaEntity;
 import br.com.ibm.TudoDeBom.exceptions.EntradaNotFoundException;
 import br.com.ibm.TudoDeBom.repository.EntradaRepository;
@@ -23,6 +25,9 @@ public class EntradaService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private SaidaService saidaService;
+
     public ResponseEntradaDTO save(RequestEntradaDTO requestEntradaDTO) {
         //fazendo a requisição
         EntradaEntity entity = modelMapper.map(requestEntradaDTO, EntradaEntity.class);
@@ -33,7 +38,6 @@ public class EntradaService {
     }
 
     public List<ResponseEntradaDTO> getAll() {
-        //usando o método do JpaRepository (findAll()) para obter todos os clientes salvos
         List<EntradaEntity> allClients = entradaRepository.findAll();
 
         List<ResponseEntradaDTO> dtos = allClients.stream().map(entradaEntity ->

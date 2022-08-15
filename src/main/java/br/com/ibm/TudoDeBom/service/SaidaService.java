@@ -25,27 +25,15 @@ public class SaidaService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public ResponseSaidaDTO save(RequestSaidaDTO request, RequestProdutoDTO requestProdutoDTO, RequestEntradaDTO requestEntradaDTOs, ResponseSaidaDTO responseSaidaDTO) {
-        BigDecimal porcentagem = new BigDecimal("0.8") ;
-        BigDecimal quantidade = new BigDecimal(requestEntradaDTOs.getQuantidade());
+    public ResponseSaidaDTO save(RequestSaidaDTO requestSaidaDTO) {
 
-        if (requestProdutoDTO.getIsMedicine().equals(true) && requestProdutoDTO.getIsGeneric().equals(true)) {
+        SaidaEntity entity = modelMapper.map(requestSaidaDTO, SaidaEntity.class);
 
-            BigDecimal result =  porcentagem.multiply(requestEntradaDTOs.getPrecoUnitario());
-            responseSaidaDTO.setValorFinal(result.multiply(quantidade));
+        SaidaEntity produtoSaved = saidaRepository.save(entity);
 
-        } else {
-            responseSaidaDTO.setValorFinal(requestEntradaDTOs.getPrecoUnitario().multiply(quantidade));
-        }
-
-        SaidaEntity orderEntity = modelMapper.map(responseSaidaDTO, SaidaEntity.class);
-        SaidaEntity savedEntity = saidaRepository.save(orderEntity);
-
-        return modelMapper.map(savedEntity, ResponseSaidaDTO.class);
+        return modelMapper.map(produtoSaved, ResponseSaidaDTO.class);
     }
-
     public List<ResponseSaidaDTO> getAll() {
-        //usando o método do JpaRepository (findAll()) para obter todos os clientes salvos
         List<SaidaEntity> allClients = saidaRepository.findAll();
 
         List<ResponseSaidaDTO> dtos = allClients.stream().map(saidaEntity ->

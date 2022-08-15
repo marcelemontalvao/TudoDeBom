@@ -3,9 +3,8 @@ package br.com.ibm.TudoDeBom.controller;
 import br.com.ibm.TudoDeBom.dto.request.RequestEntradaDTO;
 import br.com.ibm.TudoDeBom.dto.request.RequestProdutoDTO;
 import br.com.ibm.TudoDeBom.dto.response.ResponseEntradaDTO;
-import br.com.ibm.TudoDeBom.dto.response.ResponseProductDTO;
+import br.com.ibm.TudoDeBom.dto.response.ResponseSaidaDTO;
 import br.com.ibm.TudoDeBom.service.EntradaService;
-import br.com.ibm.TudoDeBom.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +24,7 @@ public class EntradaController {
         ResponseEntradaDTO responseEntradaDTO = entradaService.save(requestEntradaDTO);
         return ResponseEntity.ok(responseEntradaDTO);
     }
+
 
     @GetMapping()
     public ResponseEntity<List<ResponseEntradaDTO>> get() {

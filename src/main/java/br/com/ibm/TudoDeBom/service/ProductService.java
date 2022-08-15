@@ -1,6 +1,9 @@
 package br.com.ibm.TudoDeBom.service;
+import br.com.ibm.TudoDeBom.dto.request.RequestEntradaDTO;
 import br.com.ibm.TudoDeBom.dto.request.RequestProdutoDTO;
+import br.com.ibm.TudoDeBom.dto.request.RequestSaidaDTO;
 import br.com.ibm.TudoDeBom.dto.response.ResponseProductDTO;
+import br.com.ibm.TudoDeBom.dto.response.ResponseSaidaDTO;
 import br.com.ibm.TudoDeBom.entities.ProdutoEntity;
 import br.com.ibm.TudoDeBom.exceptions.ProdutoNotFoundException;
 import br.com.ibm.TudoDeBom.repository.ProdutoRepository;
@@ -9,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,13 +25,25 @@ public class ProductService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public ResponseProductDTO save(RequestProdutoDTO requestProdutoDTO) {
-        //fazendo a requisição
-        ProdutoEntity entity = modelMapper.map(requestProdutoDTO, ProdutoEntity.class);
-        //salvando no BD
-        ProdutoEntity produtoSaved = produtoRepository.save(entity);
-        //retornando e transformando num response
-        return modelMapper.map(produtoSaved, ResponseProductDTO.class);
+
+
+    public ResponseProductDTO save(@Valid RequestProdutoDTO requestProdutoDTO, RequestEntradaDTO requestEntradaDTOs, ResponseSaidaDTO responseSaidaDTO, ResponseProductDTO responseProductDTO) {
+        BigDecimal porcentagem = new BigDecimal("0.8") ;
+        BigDecimal quantidade = new BigDecimal(requestEntradaDTOs.getQuantidadeEntrada());
+
+        if (requestProdutoDTO.getIsMedicine().equals(true) && requestProdutoDTO.getIsGeneric().equals(true)) {
+
+            BigDecimal result =  porcentagem.multiply(requestEntradaDTOs.getPrecoUnitario()).multiply(quantidade);
+            responseSaidaDTO.setValorFinal(result);
+
+        } else {
+            responseSaidaDTO.setValorFinal(requestEntradaDTOs.getPrecoUnitario().multiply(quantidade));
+        }
+
+        ProdutoEntity orderEntity = modelMapper.map(responseProductDTO, ProdutoEntity.class);
+        ProdutoEntity savedEntity = produtoRepository.save(orderEntity);
+
+        return modelMapper.map(savedEntity, ResponseProductDTO.class);
     }
 
     public List<ResponseProductDTO> getAll() {

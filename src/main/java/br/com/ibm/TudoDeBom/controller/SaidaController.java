@@ -23,14 +23,13 @@ public class SaidaController {
     @Autowired
     private SaidaRepository saidaRepository;
 
-    @PostMapping
-    public ResponseEntity<ResponseSaidaDTO> postOrder(@RequestBody @Valid RequestSaidaDTO request, RequestProdutoDTO requestProdutoDTO, RequestEntradaDTO requestEntradaDTOs, ResponseSaidaDTO responseSaidaDTO) {
-        saidaService.save(request, requestProdutoDTO, requestEntradaDTOs, responseSaidaDTO);
+    @PostMapping() public ResponseEntity<ResponseSaidaDTO> post(@Valid @RequestBody RequestSaidaDTO requestSaidaDTO) {
+        ResponseSaidaDTO responseSaidaDTO = saidaService.save(requestSaidaDTO);
         return ResponseEntity.ok(responseSaidaDTO);
     }
 
     @GetMapping()
-    public ResponseEntity<List<ResponseSaidaDTO>> getAllOrders(ResponseSaidaDTO responseSaidaDTO) {
+    public ResponseEntity<List<ResponseSaidaDTO>> getAll(ResponseSaidaDTO responseSaidaDTO) {
        List<ResponseSaidaDTO> responseSaidaDTOS = saidaService.getAll();
         return ResponseEntity.ok(responseSaidaDTOS);
     }
@@ -48,7 +47,7 @@ public class SaidaController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deletePedido(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         saidaService.delete(id);
         return ResponseEntity.noContent().build();
     }

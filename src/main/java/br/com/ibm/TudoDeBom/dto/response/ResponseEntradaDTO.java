@@ -10,5 +10,5 @@ public class ResponseEntradaDTO {
     private Long id;
     private Date dataEntrada;
     private BigDecimal precoUnitario;
-    private Integer quantidade;
+    private Integer quantidadeEntrada;
 }

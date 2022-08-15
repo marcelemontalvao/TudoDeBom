@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -18,5 +19,5 @@ public class EntradaEntity {
     private Long id;
     private Date dataEntrada;
     private BigDecimal precoUnitario;
-    private Integer quantidade;
+    private Integer quantidadeEntrada;
 }
