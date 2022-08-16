@@ -25,24 +25,10 @@ public class SaidaService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public ResponseSaidaDTO save(RequestSaidaDTO requestSaidaDTO) {
-        SaidaEntity entity = modelMapper.map(requestSaidaDTO, SaidaEntity.class);
-        SaidaEntity produtoSaved = saidaRepository.save(entity);
-        return modelMapper.map(produtoSaved, ResponseSaidaDTO.class);
-    }
-    public List<ResponseSaidaDTO> getAll() {
-        List<SaidaEntity> allClients = saidaRepository.findAll();
-
-        List<ResponseSaidaDTO> dtos = allClients.stream().map(saidaEntity ->
-                modelMapper.map(saidaEntity, ResponseSaidaDTO.class)).collect(Collectors.toList());
-        return dtos;
-    }
-
     public ResponseSaidaDTO getById(Long id) {
         SaidaEntity saidaEntity = saidaRepository.findById(id).orElseThrow(SaidaNotFoundException::new);
         return modelMapper.map(saidaEntity, ResponseSaidaDTO.class);
     }
-
 
     public ResponseSaidaDTO update(RequestSaidaDTO requestSaidaDTO, Long id) {
         SaidaEntity saidaEntity = saidaRepository.findById(id).orElseThrow(SaidaNotFoundException::new);
@@ -51,10 +37,6 @@ public class SaidaService {
         return map;
     }
 
-    public void delete(@PathVariable Long id) {
-        saidaRepository.findById(id).orElseThrow(SaidaNotFoundException::new);
-        saidaRepository.deleteById(id);
-    }
 }
 
 

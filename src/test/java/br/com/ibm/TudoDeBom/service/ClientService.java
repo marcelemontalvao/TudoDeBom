@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Optional;
-
+/*/
 @DisplayName("ClientServiceTest")
 public class ClientService extends AplicationConfigTest {
 
@@ -39,3 +39,4 @@ public class ClientService extends AplicationConfigTest {
     return client;
    }
 }
+*/

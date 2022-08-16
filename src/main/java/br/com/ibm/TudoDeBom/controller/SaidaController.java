@@ -16,7 +16,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/saidas")
+@RequestMapping("/products")
 public class SaidaController {
 
     @Autowired
@@ -25,33 +25,15 @@ public class SaidaController {
     @Autowired
     private SaidaRepository saidaRepository;
 
-    @PostMapping() public ResponseEntity<ResponseSaidaDTO> post(@Valid @RequestBody RequestSaidaDTO requestSaidaDTO, UriComponentsBuilder uriComponentsBuilder) {
-        ResponseSaidaDTO responseSaidaDTO = saidaService.save(requestSaidaDTO);
-        URI uri = uriComponentsBuilder.path("/saidas/{id}").buildAndExpand(responseSaidaDTO.getId()).toUri();
-        return ResponseEntity.created(uri).body(responseSaidaDTO);
-    }
-
-    @GetMapping()
-    public ResponseEntity<List<ResponseSaidaDTO>> getAll(ResponseSaidaDTO responseSaidaDTO) {
-        List<ResponseSaidaDTO> responseSaidaDTOS = saidaService.getAll();
-        return ResponseEntity.ok(responseSaidaDTOS);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseSaidaDTO> getSaidaById(@PathVariable Long id) {
-        ResponseSaidaDTO responseClienteDTO = saidaService.getById(id);
+    @GetMapping("/{idProduct}/outputs")
+    public ResponseEntity<ResponseSaidaDTO> getSaidaById(@PathVariable Long idProduct) {
+        ResponseSaidaDTO responseClienteDTO = saidaService.getById(idProduct);
         return ResponseEntity.ok(responseClienteDTO);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<Void> update(@RequestBody @Valid RequestSaidaDTO request, @PathVariable Long id) {
-        saidaService.update(request, id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        saidaService.delete(id);
+    @PutMapping("/{idProduct}/outputs")
+    public ResponseEntity<Void> update(@RequestBody @Valid RequestSaidaDTO request, @PathVariable Long idProduct) {
+        saidaService.update(request, idProduct);
         return ResponseEntity.noContent().build();
     }
 

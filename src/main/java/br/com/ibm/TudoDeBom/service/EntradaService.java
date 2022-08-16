@@ -5,8 +5,11 @@ import br.com.ibm.TudoDeBom.dto.request.RequestProdutoDTO;
 import br.com.ibm.TudoDeBom.dto.response.ResponseEntradaDTO;
 import br.com.ibm.TudoDeBom.dto.response.ResponseSaidaDTO;
 import br.com.ibm.TudoDeBom.entities.EntradaEntity;
+import br.com.ibm.TudoDeBom.entities.ProdutoEntity;
 import br.com.ibm.TudoDeBom.exceptions.EntradaNotFoundException;
+import br.com.ibm.TudoDeBom.exceptions.ProdutoNotFoundException;
 import br.com.ibm.TudoDeBom.repository.EntradaRepository;
+import br.com.ibm.TudoDeBom.repository.ProdutoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,37 +26,22 @@ public class EntradaService {
     private EntradaRepository entradaRepository;
 
     @Autowired
+    private ProdutoRepository produtoRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
 
-    public ResponseEntradaDTO save(RequestEntradaDTO requestEntradaDTO) {
-        EntradaEntity entity = modelMapper.map(requestEntradaDTO, EntradaEntity.class);
-        EntradaEntity entradaSaved = entradaRepository.save(entity);
-        return modelMapper.map(entradaSaved, ResponseEntradaDTO.class);
+    public ResponseEntradaDTO getById(Long idProduto){
+        ProdutoEntity produto = produtoRepository.findById(idProduto).orElseThrow(ProdutoNotFoundException::new);
+        EntradaEntity entrada = produto.getEntrada();
+        return modelMapper.map(entrada, ResponseEntradaDTO.class);
     }
 
-    public List<ResponseEntradaDTO> getAll() {
-        List<EntradaEntity> allClients = entradaRepository.findAll();
-
-        List<ResponseEntradaDTO> dtos = allClients.stream().map(entradaEntity ->
-                modelMapper.map(entradaEntity, ResponseEntradaDTO.class)).collect(Collectors.toList());
-        return dtos;
+    public void update(RequestEntradaDTO requestEntradaDTO, Long idProduto) {
+        ProdutoEntity produto = produtoRepository.findById(idProduto).orElseThrow(ProdutoNotFoundException::new);
+        EntradaEntity entrada = produto.getEntrada();
+        modelMapper.map(requestEntradaDTO, entrada);
+        entradaRepository.save(entrada);
     }
 
-    public ResponseEntradaDTO getById(Long id){
-        EntradaEntity entradaEntity = entradaRepository.findById(id).orElseThrow(EntradaNotFoundException::new);
-        return modelMapper.map(entradaEntity, ResponseEntradaDTO.class);
-    }
-
-
-    public ResponseEntradaDTO update(@Valid RequestEntradaDTO requestEntradaDTO, Long id) {
-        EntradaEntity entradaEntity = entradaRepository.findById(id).orElseThrow(EntradaNotFoundException::new);
-        ResponseEntradaDTO map = modelMapper.map(requestEntradaDTO, ResponseEntradaDTO.class);
-        entradaRepository.save(entradaEntity);
-        return map;
-    }
-
-    public void delete(@PathVariable Long id) {
-        entradaRepository.findById(id).orElseThrow(EntradaNotFoundException::new);
-        entradaRepository.deleteById(id);
-    }
 }
