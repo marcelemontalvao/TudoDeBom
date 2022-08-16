@@ -1,10 +1,7 @@
 package br.com.ibm.TudoDeBom.controller;
 
-import br.com.ibm.TudoDeBom.dto.request.RequestEntradaDTO;
-import br.com.ibm.TudoDeBom.dto.request.RequestProdutoDTO;
-import br.com.ibm.TudoDeBom.dto.request.RequestSaidaDTO;
+import br.com.ibm.TudoDeBom.dto.request.RequestProductDTO;
 import br.com.ibm.TudoDeBom.dto.response.ResponseProductDTO;
-import br.com.ibm.TudoDeBom.dto.response.ResponseSaidaDTO;
 import br.com.ibm.TudoDeBom.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,29 +18,28 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-
     @PostMapping
-    public ResponseEntity<ResponseProductDTO> post(@Valid @RequestBody RequestProdutoDTO requestProdutoDTO, UriComponentsBuilder uriComponentsBuilder) {
-        ResponseProductDTO responseProductDTO = productService.save(requestProdutoDTO);
-        URI uri = uriComponentsBuilder.path("/produtos/{id}").buildAndExpand(responseProductDTO.getId()).toUri();
+    public ResponseEntity<ResponseProductDTO> post(@Valid @RequestBody RequestProductDTO requestProductDTO, UriComponentsBuilder uriComponentsBuilder) {
+        ResponseProductDTO responseProductDTO = productService.save(requestProductDTO);
+        URI uri = uriComponentsBuilder.path("/products/{id}").buildAndExpand(responseProductDTO.getId()).toUri();
         return ResponseEntity.created(uri).body(responseProductDTO);
     }
     @GetMapping()
-    public ResponseEntity<List<ResponseProductDTO>> get(ResponseProductDTO responseClienteDTO) {
-        List<ResponseProductDTO> responsesClienteDTO = productService.getAll();
-        return ResponseEntity.ok(responsesClienteDTO);
+    public ResponseEntity<List<ResponseProductDTO>> get() {
+        List<ResponseProductDTO> responsesProductDTO = productService.getAll();
+        return ResponseEntity.ok(responsesProductDTO);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseProductDTO> getProductById(@PathVariable Long id) {
-        ResponseProductDTO responseClienteDTO = productService.getById(id);
-        return ResponseEntity.ok(responseClienteDTO);
+        ResponseProductDTO responseProductDTO = productService.getById(id);
+        return ResponseEntity.ok(responseProductDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseProductDTO> put(@Valid @RequestBody RequestProdutoDTO requestProdutoDTO, @PathVariable Long id) {
-        ResponseProductDTO responseClienteDTO = productService.update(requestProdutoDTO, id);
-        return ResponseEntity.ok(responseClienteDTO);
+    public ResponseEntity<ResponseProductDTO> put(@Valid @RequestBody RequestProductDTO requestProductDTO, @PathVariable Long id) {
+        ResponseProductDTO responseProductDTO = productService.update(requestProductDTO, id);
+        return ResponseEntity.ok(responseProductDTO);
     }
 
     @DeleteMapping("/{id}")

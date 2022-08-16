@@ -1,17 +1,14 @@
 package br.com.ibm.TudoDeBom.dto.request;
 
-import br.com.ibm.TudoDeBom.entities.EntradaEntity;
-import br.com.ibm.TudoDeBom.entities.SaidaEntity;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
-import javax.validation.Valid;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
 
 @Data
-public class RequestProdutoDTO {
+public class RequestProductDTO {
     @NotEmpty
     private String nome;
     @DateTimeFormat
@@ -20,10 +17,8 @@ public class RequestProdutoDTO {
     private Boolean isMedicine;
     @NotNull
     private Boolean isGeneric;
-    @NotNull
-    private Integer estoque;
 
-    private RequestEntradaDTO entrada;
-    private RequestSaidaDTO saida;
+    private RequestInputDTO estoque;
+    private RequestOrderDTO pedido;
 
 }

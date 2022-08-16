@@ -1,18 +1,14 @@
 package br.com.ibm.TudoDeBom.service;
-import br.com.ibm.TudoDeBom.dto.request.RequestEntradaDTO;
-import br.com.ibm.TudoDeBom.dto.request.RequestProdutoDTO;
-import br.com.ibm.TudoDeBom.dto.request.RequestSaidaDTO;
+import br.com.ibm.TudoDeBom.dto.request.RequestProductDTO;
 import br.com.ibm.TudoDeBom.dto.response.ResponseProductDTO;
-import br.com.ibm.TudoDeBom.dto.response.ResponseSaidaDTO;
-import br.com.ibm.TudoDeBom.entities.ProdutoEntity;
-import br.com.ibm.TudoDeBom.exceptions.ProdutoNotFoundException;
-import br.com.ibm.TudoDeBom.repository.ProdutoRepository;
+import br.com.ibm.TudoDeBom.entities.ProductEntity;
+import br.com.ibm.TudoDeBom.exceptions.ProductNotFoundException;
+import br.com.ibm.TudoDeBom.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,54 +16,54 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService {
     @Autowired
-    private ProdutoRepository produtoRepository;
+    private ProductRepository productRepository;
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public ResponseProductDTO save(RequestProdutoDTO requestProdutoDTO) {
+    public ResponseProductDTO save(RequestProductDTO requestProductDTO) {
         BigDecimal porcentagem = new BigDecimal("0.8") ;
-        BigDecimal quantidade = new BigDecimal(requestProdutoDTO.getEntrada().getQuantidadeEntrada());
+        BigDecimal quantidade = new BigDecimal(requestProductDTO.getPedido().getQuantidade());
 
-        if (requestProdutoDTO.getIsMedicine().equals(true) && requestProdutoDTO.getIsGeneric().equals(true)) {
-            ProdutoEntity orderEntity = modelMapper.map(requestProdutoDTO, ProdutoEntity.class);
-            ProdutoEntity savedEntity = produtoRepository.save(orderEntity);
+        if (requestProductDTO.getIsMedicine().equals(true) && requestProductDTO.getIsGeneric().equals(true)) {
+            ProductEntity orderEntity = modelMapper.map(requestProductDTO, ProductEntity.class);
+            ProductEntity savedEntity = productRepository.save(orderEntity);
             ResponseProductDTO map = modelMapper.map(savedEntity, ResponseProductDTO.class);
-            BigDecimal result =  porcentagem.multiply(requestProdutoDTO.getEntrada().getPrecoUnitario()).multiply(quantidade);
-            map.getSaida().setValorFinal(result);
-            produtoRepository.save(modelMapper.map(map, ProdutoEntity.class));
+            BigDecimal result =  porcentagem.multiply(requestProductDTO.getPedido().getPrecoUnitario()).multiply(quantidade);
+            map.getPedido().setValorFinal(result);
+            productRepository.save(modelMapper.map(map, ProductEntity.class));
             return map;
         }
-        ProdutoEntity orderEntity = modelMapper.map(requestProdutoDTO, ProdutoEntity.class);
-        ProdutoEntity savedEntity = produtoRepository.save(orderEntity);
+        ProductEntity orderEntity = modelMapper.map(requestProductDTO, ProductEntity.class);
+        ProductEntity savedEntity = productRepository.save(orderEntity);
         ResponseProductDTO map = modelMapper.map(savedEntity, ResponseProductDTO.class);
 
-        map.getSaida().setValorFinal(requestProdutoDTO.getEntrada().getPrecoUnitario().multiply(quantidade));
-        produtoRepository.save(modelMapper.map(map, ProdutoEntity.class));
+        map.getPedido().setValorFinal(requestProductDTO.getPedido().getPrecoUnitario().multiply(quantidade));
+        productRepository.save(modelMapper.map(map, ProductEntity.class));
         return map;
     }
 
     public List<ResponseProductDTO> getAll() {
-        List<ProdutoEntity> allClients = produtoRepository.findAll();
-        List<ResponseProductDTO> dtos = allClients.stream().map(produtoEntity ->
-                modelMapper.map(produtoEntity, ResponseProductDTO.class)).collect(Collectors.toList());
+        List<ProductEntity> allClients = productRepository.findAll();
+        List<ResponseProductDTO> dtos = allClients.stream().map(productEntity ->
+                modelMapper.map(productEntity, ResponseProductDTO.class)).collect(Collectors.toList());
         return dtos;
     }
 
     public ResponseProductDTO getById(Long id){
-        ProdutoEntity produtoEntity = produtoRepository.findById(id).orElseThrow(ProdutoNotFoundException::new);
-        return modelMapper.map(produtoEntity, ResponseProductDTO.class);
+        ProductEntity productEntity = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+        return modelMapper.map(productEntity, ResponseProductDTO.class);
     }
 
-    public ResponseProductDTO update(RequestProdutoDTO requestProdutoDTO, Long id) {
-        ProdutoEntity produtoEntity = produtoRepository.findById(id).orElseThrow(ProdutoNotFoundException::new);
-        ResponseProductDTO map = modelMapper.map(requestProdutoDTO, ResponseProductDTO.class);
-        produtoRepository.save(produtoEntity);
+    public ResponseProductDTO update(RequestProductDTO requestProductDTO, Long id) {
+        ProductEntity productEntity = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+        ResponseProductDTO map = modelMapper.map(requestProductDTO, ResponseProductDTO.class);
+        productRepository.save(productEntity);
         return map;
     }
 
     public void delete(@PathVariable Long id) {
-        produtoRepository.findById(id).orElseThrow(ProdutoNotFoundException::new);
-        produtoRepository.deleteById(id);
+        productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+        productRepository.deleteById(id);
     }
 }

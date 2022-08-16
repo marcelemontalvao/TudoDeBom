@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -13,11 +12,14 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EntradaEntity {
+public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date dataEntrada;
+    private Date dataSaida;
     private BigDecimal precoUnitario;
-    private Integer quantidadeEntrada;
+    private Integer quantidade;
+    private BigDecimal valorFinal;
 }
+
+

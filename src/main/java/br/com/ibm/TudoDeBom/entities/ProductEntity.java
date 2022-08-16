@@ -5,19 +5,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaidaEntity {
+public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date dataSaida;
-    private BigDecimal valorFinal;
+    private String nome;
+    private Date dataDeCriacao;
+    private Boolean isMedicine;
+    private Boolean isGeneric;
+    @OneToOne(cascade = CascadeType.ALL)
+    private InputEntity entrada;
+    @OneToOne(cascade = CascadeType.ALL)
+    private OrderEntity saida;
 }
-
-

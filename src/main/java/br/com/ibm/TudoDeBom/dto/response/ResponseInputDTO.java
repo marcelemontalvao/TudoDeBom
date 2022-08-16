@@ -2,13 +2,12 @@ package br.com.ibm.TudoDeBom.dto.response;
 
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class ResponseEntradaDTO {
+public class ResponseInputDTO {
     private Long id;
     private Date dataEntrada;
-    private BigDecimal precoUnitario;
-    private Integer quantidadeEntrada;
+    private Integer estoque;
+
 }
