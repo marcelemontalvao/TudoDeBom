@@ -10,10 +10,7 @@ import java.util.Date;
 
 @Data
 public class RequestSaidaDTO {
-    @NotEmpty
     @DateTimeFormat
     private Date dataSaida;
 
-    @ManyToOne
-    private ProdutoEntity produto;
 }

@@ -9,8 +9,10 @@ import br.com.ibm.TudoDeBom.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -20,9 +22,10 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
-    public ResponseEntity<ResponseProductDTO> postOrder(@RequestBody @Valid RequestProdutoDTO requestProdutoDTO, RequestEntradaDTO requestEntradaDTO, ResponseSaidaDTO responseSaidaDTO, ResponseProductDTO responseProductDTO) {
-        productService.save(requestProdutoDTO, requestEntradaDTO,responseSaidaDTO , responseProductDTO);
-        return ResponseEntity.ok(responseProductDTO);
+    public ResponseEntity<ResponseProductDTO> post(@Valid @RequestBody RequestProdutoDTO requestProdutoDTO, UriComponentsBuilder uriComponentsBuilder) {
+        ResponseProductDTO responseProductDTO = productService.save(requestProdutoDTO);
+        URI uri = uriComponentsBuilder.path("/produtos/{id}").buildAndExpand(responseProductDTO.getId()).toUri();
+        return ResponseEntity.created(uri).body(responseProductDTO);
     }
     @GetMapping()
     public ResponseEntity<List<ResponseProductDTO>> get(ResponseProductDTO responseClienteDTO) {

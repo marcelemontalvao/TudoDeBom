@@ -1,8 +1,11 @@
 package br.com.ibm.TudoDeBom.entities;
 
+import br.com.ibm.TudoDeBom.dto.request.RequestEntradaDTO;
+import br.com.ibm.TudoDeBom.dto.request.RequestSaidaDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -20,8 +23,8 @@ public class ProdutoEntity {
     private Boolean isMedicine;
     private Boolean isGeneric;
     private Integer quantidade;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<EntradaEntity> entrada;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<SaidaEntity> saida;
+    @OneToOne(cascade = CascadeType.ALL)
+    private EntradaEntity entrada;
+    @OneToOne(cascade = CascadeType.ALL)
+    private SaidaEntity saida;
 }

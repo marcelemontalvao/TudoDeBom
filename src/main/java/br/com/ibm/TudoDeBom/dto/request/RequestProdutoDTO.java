@@ -21,7 +21,7 @@ public class RequestProdutoDTO {
     @NotNull
     private Boolean isGeneric;
 
-    private List<@Valid EntradaEntity> entrada;
-    private List<@Valid SaidaEntity> saida;
+    private RequestEntradaDTO entrada;
+    private RequestSaidaDTO saida;
 
 }

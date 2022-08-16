@@ -25,31 +25,29 @@ public class ProductService {
     @Autowired
     private ModelMapper modelMapper;
 
-
-
-    public ResponseProductDTO save(@Valid RequestProdutoDTO requestProdutoDTO, RequestEntradaDTO requestEntradaDTOs, ResponseSaidaDTO responseSaidaDTO, ResponseProductDTO responseProductDTO) {
+    public ResponseProductDTO save(RequestProdutoDTO requestProdutoDTO) {
+        System.out.println(requestProdutoDTO.getEntrada().getQuantidadeEntrada());
+        System.out.println(requestProdutoDTO.getEntrada().getPrecoUnitario());
         BigDecimal porcentagem = new BigDecimal("0.8") ;
-        BigDecimal quantidade = new BigDecimal(requestEntradaDTOs.getQuantidadeEntrada());
+        BigDecimal quantidade = new BigDecimal(requestProdutoDTO.getEntrada().getQuantidadeEntrada());
 
         if (requestProdutoDTO.getIsMedicine().equals(true) && requestProdutoDTO.getIsGeneric().equals(true)) {
-
-            BigDecimal result =  porcentagem.multiply(requestEntradaDTOs.getPrecoUnitario()).multiply(quantidade);
-            responseSaidaDTO.setValorFinal(result);
-
-        } else {
-            responseSaidaDTO.setValorFinal(requestEntradaDTOs.getPrecoUnitario().multiply(quantidade));
+            ProdutoEntity orderEntity = modelMapper.map(requestProdutoDTO, ProdutoEntity.class);
+            ProdutoEntity savedEntity = produtoRepository.save(orderEntity);
+            ResponseProductDTO map = modelMapper.map(savedEntity, ResponseProductDTO.class);
+            BigDecimal result =  porcentagem.multiply(requestProdutoDTO.getEntrada().getPrecoUnitario()).multiply(quantidade);
+            map.getSaida().setValorFinal(result);
+            return map;
         }
-
-        ProdutoEntity orderEntity = modelMapper.map(responseProductDTO, ProdutoEntity.class);
+        ProdutoEntity orderEntity = modelMapper.map(requestProdutoDTO, ProdutoEntity.class);
         ProdutoEntity savedEntity = produtoRepository.save(orderEntity);
-
-        return modelMapper.map(savedEntity, ResponseProductDTO.class);
+        ResponseProductDTO map = modelMapper.map(savedEntity, ResponseProductDTO.class);
+        map.getSaida().setValorFinal(requestProdutoDTO.getEntrada().getPrecoUnitario().multiply(quantidade));
+        return map;
     }
 
     public List<ResponseProductDTO> getAll() {
-        //usando o método do JpaRepository (findAll()) para obter todos os clientes salvos
         List<ProdutoEntity> allClients = produtoRepository.findAll();
-
         List<ResponseProductDTO> dtos = allClients.stream().map(produtoEntity ->
                 modelMapper.map(produtoEntity, ResponseProductDTO.class)).collect(Collectors.toList());
         return dtos;
@@ -59,7 +57,6 @@ public class ProductService {
         ProdutoEntity produtoEntity = produtoRepository.findById(id).orElseThrow(ProdutoNotFoundException::new);
         return modelMapper.map(produtoEntity, ResponseProductDTO.class);
     }
-
 
     public ResponseProductDTO update(RequestProdutoDTO requestProdutoDTO, Long id) {
         ProdutoEntity produtoEntity = produtoRepository.findById(id).orElseThrow(ProdutoNotFoundException::new);

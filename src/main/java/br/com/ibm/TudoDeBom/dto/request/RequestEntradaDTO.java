@@ -16,6 +16,4 @@ public class RequestEntradaDTO {
     private BigDecimal precoUnitario;
     private Integer quantidadeEntrada;
 
-    @ManyToOne
-    private ProdutoEntity produto;
 }
