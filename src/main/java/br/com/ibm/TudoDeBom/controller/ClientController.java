@@ -6,8 +6,10 @@ import br.com.ibm.TudoDeBom.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 
@@ -18,9 +20,10 @@ public class ClientController {
     private ClientService clientService;
 
     @PostMapping
-    public ResponseEntity<ResponseClientDTO> post(@RequestBody @Valid RequestClientDTO request) {
+    public ResponseEntity<ResponseClientDTO> post(@RequestBody @Valid RequestClientDTO request, UriComponentsBuilder uriComponentsBuilder) {
        ResponseClientDTO responseClientDTO = clientService.save(request);
-       return ResponseEntity.ok(responseClientDTO);
+        URI uri = uriComponentsBuilder.path("/clients/{id}").buildAndExpand(responseClientDTO.getId()).toUri();
+       return ResponseEntity.created(uri).body(responseClientDTO);
     }
 
     @GetMapping

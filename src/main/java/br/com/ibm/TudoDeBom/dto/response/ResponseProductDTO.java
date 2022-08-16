@@ -16,6 +16,7 @@ public class ResponseProductDTO {
     private Date dataDeCriacao;
     private Boolean isMedicine;
     private Boolean isGeneric;
+    private Integer estoque;
     private ResponseEntradaDTO entrada;
     private ResponseSaidaDTO saida;
 }

@@ -35,12 +35,15 @@ public class ProductService {
             ResponseProductDTO map = modelMapper.map(savedEntity, ResponseProductDTO.class);
             BigDecimal result =  porcentagem.multiply(requestProdutoDTO.getEntrada().getPrecoUnitario()).multiply(quantidade);
             map.getSaida().setValorFinal(result);
+            produtoRepository.save(modelMapper.map(map, ProdutoEntity.class));
             return map;
         }
         ProdutoEntity orderEntity = modelMapper.map(requestProdutoDTO, ProdutoEntity.class);
         ProdutoEntity savedEntity = produtoRepository.save(orderEntity);
         ResponseProductDTO map = modelMapper.map(savedEntity, ResponseProductDTO.class);
+
         map.getSaida().setValorFinal(requestProdutoDTO.getEntrada().getPrecoUnitario().multiply(quantidade));
+        produtoRepository.save(modelMapper.map(map, ProdutoEntity.class));
         return map;
     }
 

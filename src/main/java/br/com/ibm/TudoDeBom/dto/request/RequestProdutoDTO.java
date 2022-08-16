@@ -20,6 +20,8 @@ public class RequestProdutoDTO {
     private Boolean isMedicine;
     @NotNull
     private Boolean isGeneric;
+    @NotNull
+    private Integer estoque;
 
     private RequestEntradaDTO entrada;
     private RequestSaidaDTO saida;

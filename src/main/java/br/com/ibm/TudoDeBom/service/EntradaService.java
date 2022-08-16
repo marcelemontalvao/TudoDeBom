@@ -25,15 +25,9 @@ public class EntradaService {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    private SaidaService saidaService;
-
     public ResponseEntradaDTO save(RequestEntradaDTO requestEntradaDTO) {
-        //fazendo a requisição
         EntradaEntity entity = modelMapper.map(requestEntradaDTO, EntradaEntity.class);
-        //salvando no BD
         EntradaEntity entradaSaved = entradaRepository.save(entity);
-        //retornando e transformando num response
         return modelMapper.map(entradaSaved, ResponseEntradaDTO.class);
     }
 

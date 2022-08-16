@@ -8,23 +8,25 @@ import br.com.ibm.TudoDeBom.service.EntradaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/entradas")
+@RequestMapping("/products/{idProduto}/inputs")
 public class EntradaController {
 
     @Autowired
     private EntradaService entradaService;
 
     @PostMapping()
-    public ResponseEntity<ResponseEntradaDTO> post(@Valid @RequestBody RequestEntradaDTO requestEntradaDTO) {
+    public ResponseEntity<ResponseEntradaDTO> post(@Valid @RequestBody RequestEntradaDTO requestEntradaDTO, UriComponentsBuilder uriComponentsBuilder) {
         ResponseEntradaDTO responseEntradaDTO = entradaService.save(requestEntradaDTO);
-        return ResponseEntity.ok(responseEntradaDTO);
+        URI uri = uriComponentsBuilder.path("/inputs/{idProduto}").buildAndExpand(responseEntradaDTO.getId()).toUri();
+        return ResponseEntity.created(uri).body(responseEntradaDTO);
     }
-
 
     @GetMapping()
     public ResponseEntity<List<ResponseEntradaDTO>> get() {

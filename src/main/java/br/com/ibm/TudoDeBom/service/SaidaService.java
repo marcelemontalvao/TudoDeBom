@@ -26,11 +26,8 @@ public class SaidaService {
     private ModelMapper modelMapper;
 
     public ResponseSaidaDTO save(RequestSaidaDTO requestSaidaDTO) {
-
         SaidaEntity entity = modelMapper.map(requestSaidaDTO, SaidaEntity.class);
-
         SaidaEntity produtoSaved = saidaRepository.save(entity);
-
         return modelMapper.map(produtoSaved, ResponseSaidaDTO.class);
     }
     public List<ResponseSaidaDTO> getAll() {

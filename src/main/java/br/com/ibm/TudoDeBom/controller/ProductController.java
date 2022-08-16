@@ -16,10 +16,11 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/produtos")
+@RequestMapping("/products")
 public class ProductController {
     @Autowired
     private ProductService productService;
+
 
     @PostMapping
     public ResponseEntity<ResponseProductDTO> post(@Valid @RequestBody RequestProdutoDTO requestProdutoDTO, UriComponentsBuilder uriComponentsBuilder) {

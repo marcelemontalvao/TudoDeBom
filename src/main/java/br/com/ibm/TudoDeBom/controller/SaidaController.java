@@ -9,8 +9,10 @@ import br.com.ibm.TudoDeBom.service.SaidaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -23,14 +25,15 @@ public class SaidaController {
     @Autowired
     private SaidaRepository saidaRepository;
 
-    @PostMapping() public ResponseEntity<ResponseSaidaDTO> post(@Valid @RequestBody RequestSaidaDTO requestSaidaDTO) {
+    @PostMapping() public ResponseEntity<ResponseSaidaDTO> post(@Valid @RequestBody RequestSaidaDTO requestSaidaDTO, UriComponentsBuilder uriComponentsBuilder) {
         ResponseSaidaDTO responseSaidaDTO = saidaService.save(requestSaidaDTO);
-        return ResponseEntity.ok(responseSaidaDTO);
+        URI uri = uriComponentsBuilder.path("/saidas/{id}").buildAndExpand(responseSaidaDTO.getId()).toUri();
+        return ResponseEntity.created(uri).body(responseSaidaDTO);
     }
 
     @GetMapping()
     public ResponseEntity<List<ResponseSaidaDTO>> getAll(ResponseSaidaDTO responseSaidaDTO) {
-       List<ResponseSaidaDTO> responseSaidaDTOS = saidaService.getAll();
+        List<ResponseSaidaDTO> responseSaidaDTOS = saidaService.getAll();
         return ResponseEntity.ok(responseSaidaDTOS);
     }
 
