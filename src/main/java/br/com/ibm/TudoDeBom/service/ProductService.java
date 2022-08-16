@@ -26,8 +26,6 @@ public class ProductService {
     private ModelMapper modelMapper;
 
     public ResponseProductDTO save(RequestProdutoDTO requestProdutoDTO) {
-        System.out.println(requestProdutoDTO.getEntrada().getQuantidadeEntrada());
-        System.out.println(requestProdutoDTO.getEntrada().getPrecoUnitario());
         BigDecimal porcentagem = new BigDecimal("0.8") ;
         BigDecimal quantidade = new BigDecimal(requestProdutoDTO.getEntrada().getQuantidadeEntrada());
 
